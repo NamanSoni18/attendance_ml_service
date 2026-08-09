@@ -1,0 +1,15 @@
+# Web Framework & Server
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+pydantic-settings==2.2.1
+
+# Computer Vision & Machine Learning
+ultralytics==8.3.0          # YOLOv11 engine
+deepface==0.0.86            # Wrapper for ArcFace extraction
+opencv-python-headless==4.9.0.80 # Headless CV2 for Docker/Server environments
+numpy==1.26.4
+albumentations==1.4.2       # High-performance image augmentation
+
+# Vector Search & Processing
+faiss-cpu==1.8.0            # High-speed similarity search (use faiss-gpu if hardware permits)
+scikit-learn==1.4.1.post1   # Utility metrics (Cosine Similarity fallback)
