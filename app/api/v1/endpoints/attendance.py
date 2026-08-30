@@ -17,6 +17,7 @@ async def verify_attendance(
             request.image_base64, 
             request.stored_embedding
         )
+        print("Here")
         return VerificationResponse(
             status="success" if is_match else "rejected",
             is_match=is_match,
