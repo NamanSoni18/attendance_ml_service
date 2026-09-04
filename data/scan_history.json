@@ -1,0 +1,26 @@
+[
+  {
+    "scan_id": "demo-1",
+    "uid": "student_01",
+    "angle": "front",
+    "score": 0.81,
+    "threshold": 0.68,
+    "result": "match"
+  },
+  {
+    "scan_id": "demo-2",
+    "uid": "student_01",
+    "angle": "left",
+    "score": 0.72,
+    "threshold": 0.68,
+    "result": "match"
+  },
+  {
+    "scan_id": "demo-3",
+    "uid": "student_01",
+    "angle": "right",
+    "score": 0.53,
+    "threshold": 0.68,
+    "result": "reject"
+  }
+]

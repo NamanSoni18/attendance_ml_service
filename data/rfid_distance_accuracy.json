@@ -1,0 +1,4 @@
+{
+  "distance_m": [0, 1, 2, 3, 4, 5],
+  "read_accuracy_percent": [100, 92, 80, 60, 35, 12]
+}

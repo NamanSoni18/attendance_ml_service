@@ -75,12 +75,14 @@ def load_rows():
         rows = normalize_rows(read_json(path))
         if rows:
             return rows
-    print("Warning: No scan data found. Please check your JSON paths.")
-    return []
+    raise ValueError(
+        "No valid face-scan data found. Save real JSON scan results into one of: "
+        + ", ".join(str(p) for p in LOG_PATHS)
+    )
 
 def draw_chart(rows):
     if not rows:
-        return
+        raise ValueError("No scan rows available to plot.")
 
     # Extract data for plotting
     labels = [r["label"] for r in rows]
@@ -132,4 +134,8 @@ def main():
     draw_chart(rows)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ValueError as exc:
+        print(f"[ERROR] {exc}")
+        raise SystemExit(1)

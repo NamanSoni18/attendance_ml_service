@@ -1,8 +1,12 @@
-from fastapi import APIRouter, Request, HTTPException
-from app.services.vision.embedder import face_embedder # Adjust import based on your exact file name
+from fastapi import APIRouter, HTTPException, Request
+
 from app.services.search.matcher import face_matcher
+from app.services.vision.embedder import FaceEmbedder
 
 router = APIRouter()
+
+face_embedder = FaceEmbedder()
+
 
 @router.post("/verify")
 async def verify_attendance(request: Request):
@@ -13,16 +17,25 @@ async def verify_attendance(request: Request):
     if not uid or not image_base64:
         raise HTTPException(status_code=400, detail="Missing rfid_uid or image_base64")
 
-    # 1. Convert the incoming base64 image to a 512D embedding
     try:
-        target_embedding = await face_embedder.get_embedding(image_base64)
+        target_embedding = face_embedder.get_embedding(image_base64)
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Face extraction failed: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Face extraction failed: {str(e)}") from e
 
-    # 2. Reference your MongoDB collection (Assuming 'students' is your collection name)
-    db_collection = request.app.mongodb["students"]
+    db_client = getattr(request.app.state, "mongodb", None)
+    if db_client is None:
+        raise HTTPException(status_code=503, detail="Database is not configured for attendance verification.")
 
-    # 3. Pass both the uid and the live embedding to the matcher
+    if isinstance(db_client, dict):
+        db_collection = db_client.get("students")
+    elif hasattr(db_client, "students"):
+        db_collection = db_client.students
+    else:
+        db_collection = db_client
+
+    if db_collection is None or not hasattr(db_collection, "find_one"):
+        raise HTTPException(status_code=503, detail="Student collection is not available for attendance verification.")
+
     result = await face_matcher.verify_face(uid, target_embedding, db_collection)
 
     return result

@@ -13,3 +13,7 @@ albumentations==1.4.2       # High-performance image augmentation
 # Vector Search & Processing
 faiss-cpu==1.8.0            # High-speed similarity search (use faiss-gpu if hardware permits)
 scikit-learn==1.4.1.post1   # Utility metrics (Cosine Similarity fallback)
+
+# Database
+motor==3.5.1                # Async MongoDB driver used by the FastAPI app
+pymongo==4.8.0              # Compatible MongoDB driver version for Motor
